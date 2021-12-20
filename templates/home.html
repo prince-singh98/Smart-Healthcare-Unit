@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Smart Healthcare Unit</title>
+
+    <style>
+          /*body{
+            background-image: url("https://www.bostonmagazine.com/wp-content/uploads/sites/2/2021/01/Stethoscope.jpg");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-attachment:fixed;
+        }*/
+
+        body{
+            //background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .box{
+            border: 1px solid red;
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .logo{
+            font-weight:900;
+            font-size: 1.5rem;
+        }
+        img{
+            height: 220px;
+
+        }
+
+    </style>
+  </head>
+
+    <body class="container p-0">
+
+        <nav class="navbar navbar-light bg-light d-flex justify-content-center" style="width:100%">
+            <h1 class="navbar-brand mb-0 h1 logo">Smart Health Care System</h1>
+        </nav>
+
+        <div class="row">
+
+            <div class="col-md-4 p-4">
+                <div class="card">
+                      <img
+                        src="https://www.news-medical.net/image.axd?picture=2020%2F4%2Fshutterstock_571889917.jpg"
+                        class="card-img-top"
+                        alt="Fissure in Sandstone"
+                      />
+                      <div class="card-body" style="text-align:center;">
+                        <form action="diabetes_predict">
+                            <input class="btn btn-primary" type="submit" value="Predict Diabetes"/>
+                        </form>
+                      </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-4 p-4">
+                <div class="card">
+                      <img
+                        src="data:image/png;base64,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"
+                        class="card-img-top"
+                        alt="Fissure in Sandstone"
+                      />
+                      <div class="card-body" style="text-align:center;">
+                        <form action="heart_predict">
+                            <input class="btn btn-primary" type="submit" value=" Predict Heart Disease"/>
+                        </form>
+                      </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 p-4">
+                <div class="card">
+                      <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZI9IXfu8Ux-tzt-U1z9IaRC3Odwibrst6Sg&usqp=CAU"
+                        class="card-img-top"
+                        alt="Fissure in Sandstone"
+                      />
+                      <div class="card-body" style="text-align:center;">
+                        <form action="">
+                            <a class="btn btn-primary" href="https://thingspeak.com/channels/1612085/private_show" target="_blank"
+                               style="color:#fff;">Pulse Rate Monitor</a>
+                        </form>
+                      </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--<footer class="navbar navbar-light bg-light d-flex justify-content-center" style="width:100%">
+            <h1 class="navbar-brand mb-0 h1 logo">Made with Love in TU</h1>
+        </footer>-->
+
+    </body>
+
+</html>

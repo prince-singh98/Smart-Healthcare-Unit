@@ -1,0 +1,238 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <title>Smart Healthcare Unit</title>
+
+    <style>
+    body{
+        //background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    }
+    .register{
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    }
+    .register-left{
+        text-align: center;
+        color: #fff;
+        margin-top: 4%;
+    }
+    .register-left input{
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        width: 60%;
+        background: #f8f9fa;
+        font-weight: bold;
+        color: #383d41;
+        margin-top: 30%;
+        margin-bottom: 3%;
+        cursor: pointer;
+    }
+    .register-right{
+        background: #f8f9fa;
+        border-top-left-radius: 10% 50%;
+        border-bottom-left-radius: 10% 50%;
+    }
+    .register-left img{
+        margin-top: 15%;
+        margin-bottom: 5%;
+        width: 25%;
+        -webkit-animation: mover 2s infinite  alternate;
+        animation: mover 1s infinite  alternate;
+    }
+    @-webkit-keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    @keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    .register-left p{
+        font-weight: lighter;
+        padding: 12%;
+        margin-top: -9%;
+    }
+    .register .register-form{
+        padding: 10%;
+        margin-top: 10%;
+    }
+    .btnRegister{
+        float: right;
+        margin-top: 10%;
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        background: #0062cc;
+        color: #fff;
+        font-weight: 600;
+        width: 50%;
+        cursor: pointer;
+    }
+    .register .nav-tabs{
+        margin-top: 3%;
+        border: none;
+        background: #0062cc;
+        border-radius: 1.5rem;
+        width: 28%;
+        float: right;
+    }
+    .register .nav-tabs .nav-link{
+        padding: 2%;
+        height: 34px;
+        font-weight: 600;
+        color: #fff;
+        border-top-right-radius: 1.5rem;
+        border-bottom-right-radius: 1.5rem;
+    }
+    .register .nav-tabs .nav-link:hover{
+        border: none;
+    }
+    .register .nav-tabs .nav-link.active{
+        width: 100px;
+        color: #0062cc;
+        border: 2px solid #0062cc;
+        border-top-left-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+    }
+    .register-heading{
+        text-align: center;
+        margin-top: 8%;
+        margin-bottom: -15%;
+        color: #495057;
+    }
+    .result{
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+    </style>
+
+  </head>
+
+<body>
+
+    <div class="container register">
+            <div class="row">
+
+                <div class="col-md-3 register-left">
+                    <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="unreachable"/>
+                    <h3>Predict</h3>
+                    <p>Just a check to save you from danger!</p>
+                    <input type="submit" name="" value="Enter Details"/><br/>
+                </div>
+
+                <div class="col-md-9 register-right">
+
+                    <div class="tab-content" id="myTabContent">
+
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                            <form action="diabetes_result" method="post">
+                              {% csrf_token %}
+
+                                <h3 class="register-heading">Diabetes Prediction</h3>
+
+                                <div class="row register-form">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pregnancy">Pregnancy</label>
+                                            <input id="pregnancy" name="pregnancy" type="text" class="form-control"
+                                                {% if preg != None %}
+                                                   value={{preg}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bp">Blood Pressure</label>
+                                            <input id="bp" name="bp" type="text" class="form-control"
+                                                {% if bp != None %}
+                                                   value={{bp}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="insulin">Insulin</label>
+                                            <input id="insulin" name="insulin" type="text" class="form-control"
+                                                {% if ins != None %}
+                                                   value={{ins}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dpf">Diabetes Pedigree Function</label>
+                                            <input id="dpf" name="dpf" type="text" class="form-control"
+                                                {% if dpf != None %}
+                                                   value={{dpf}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        {% if result2 != None %}
+                                            {% if result2 == "Negative" %}
+                                                <div class="result">
+                                                    <p type="submit" class="btnRegister btn btn-success" style="background:green;">Tested {{result2}}</p>
+                                                </div>
+
+                                            {% elif result2 == "Positive" %}
+                                                <div class="result">
+                                                    <p type="submit" class="btnRegister btn btn-success" style="background:red;">Tested {{result2}}</p>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="glucose">Glucose</label>
+                                            <input id="glucose" name="glucose" type="text" class="form-control"
+                                                   {% if glu != None %}
+                                                   value={{glu}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="skt">Skin Thickness</label>
+                                            <input id="skt" name="skt" type="text" class="form-control"
+                                                {% if skt != None %}
+                                                   value={{skt}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bmi">BMI</label>
+                                            <input id="bmi" name="bmi" type="text" class="form-control"
+                                                {% if bmi != None %}
+                                                   value={{bmi}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age">Age</label>
+                                            <input id="age" name="age" type="text" class="form-control"
+                                                {% if age != None %}
+                                                   value={{age}}
+                                                   {% endif %}
+                                            />
+                                        </div>
+                                            <input type="submit" class="btnRegister"  value="Predict"/>
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+</body>
+
+</html>
