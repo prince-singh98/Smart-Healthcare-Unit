@@ -2,13 +2,16 @@ from django.shortcuts import render
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
+import joblib
 
 def home(request):
     return render(request, "home.html")
 
 
 def prediction_function_diabetes():
-    data = pd.read_csv(r"C:\Users\PRINCE\Desktop\Smart Healthcare Unit\diabetes_data.csv")
+    data = pd.read_csv(r"D:\Federated Learning\Website\Smart-Healthcare-Unit\diabetes_data.csv")
 
     x = data.drop(columns=["Outcome"], axis=1)
     y = data['Outcome']
@@ -16,13 +19,13 @@ def prediction_function_diabetes():
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
     # training the model
-    model = LogisticRegression()
+    model = GaussianNB()
+    # model = LogisticRegression()
     model.fit(x_train, y_train)
-    return model
-
+    joblib.dump(model, 'diabetes_model.pkl')
 
 def prediction_function_heart():
-    heart_data = pd.read_csv(r"C:\Users\PRINCE\Desktop\Smart Healthcare Unit\heart_disease_data.csv")
+    heart_data = pd.read_csv(r"D:\Federated Learning\Website\Smart-Healthcare-Unit\heart_disease_data.csv")
 
     X = heart_data.drop(columns=['target'], axis=1)
     Y = heart_data['target']
@@ -30,10 +33,15 @@ def prediction_function_heart():
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
     # training the model
-    model = LogisticRegression()
+    model = RandomForestClassifier(n_estimators = 11, criterion = 'entropy', random_state = 42)
+    # model = LogisticRegression()
     model.fit(X_train, Y_train)
-    return model
+    joblib.dump(model, 'heart_disease_model.pkl')
 
+def train_models(request):
+    prediction_function_diabetes()
+    prediction_function_heart()
+    return render(request, "home.html")
 
 def diabetes_predict(request):
     return render(request, "diabetes_predict.html")
@@ -54,10 +62,12 @@ def diabetes_result(request):
     val7 = float(request.POST['dpf'])
     val8 = int(request.POST['age'])
 
-    model = prediction_function_diabetes();
+    #model = prediction_function_diabetes();
+
+    model_load = joblib.load('diabetes_model.pkl')
 
     # Prediction variable will store the result of our model
-    prediction = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
+    prediction = model_load.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
 
     if prediction == [1]:
         result1 = "Positive"
@@ -81,10 +91,12 @@ def heart_result(request):
     val9 = int(request.POST['exang'])
     val10 = float(request.POST['oldpeak'])
 
-    model = prediction_function_heart()
+    # model = prediction_function_heart()
+
+    model_load = joblib.load('heart_disease_model.pkl')
 
     # Prediction variable will store the result of our model
-    prediction = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8, val9, val10]])
+    prediction = model_load.predict([[val1, val2, val3, val4, val5, val6, val7, val8, val9, val10]])
 
     if prediction[0] == 1:
         result1 = "Positive"
